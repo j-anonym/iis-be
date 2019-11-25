@@ -1,7 +1,7 @@
 package fit.school.project.iis.resource;
 
-import fit.school.project.iis.mapper.PersonMapper;
-import fit.school.project.iis.model.Person;
+import fit.school.project.iis.mapper.UserMapper;
+import fit.school.project.iis.model.User;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,17 +14,17 @@ import java.util.List;
 @Component
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/person")
-public class PersonResource {
+public class UserResource {
 
-    private PersonMapper personMapper;
+    private UserMapper userMapper;
 
-    public PersonResource(PersonMapper personMapper){
-        this.personMapper = personMapper;
+    public UserResource(UserMapper userMapper){
+        this.userMapper = userMapper;
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
-    public List<Person> findAll() {
-        return personMapper.findAll();
+    public List<User> findAll() {
+        return userMapper.findAll();
     }
 }

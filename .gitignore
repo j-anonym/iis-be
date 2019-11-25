@@ -23,3 +23,6 @@ build/
 
 #maven target
 target/*
+
+#project - DB config
+application.properties
