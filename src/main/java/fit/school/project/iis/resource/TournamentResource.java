@@ -31,5 +31,4 @@ public class TournamentResource {
 
         tournamentMapper.insertNewTournament(tournament);
     }
-
 }
