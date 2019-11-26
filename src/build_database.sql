@@ -1,12 +1,12 @@
 --blah blah blah
 
 --types
-create type user_type as ENUM ('P','R','S');
+create type user_type as ENUM ('P','R','S', 'A');
 CREATE TYPE player_type as ENUM ('M','W','MW');
 
 drop table if exists tournaments;
 create table tournaments(
-    id_tournament integer PRIMARY KEY,
+    id_tournament SERIAL PRIMARY KEY,
     prize integer,
     name text,
     date_from timestamptz,
@@ -22,14 +22,14 @@ create table tournaments(
 
 drop table if exists teams;
 create table teams(
-    id_team integer PRIMARY KEY,
+    id_team SERIAL PRIMARY KEY,
     name text,
     logo text
 );
 
 drop table if exists team_matches;
 create table team_matches(
-    id_team_match integer PRIMARY KEY,
+    id_team_match SERIAL PRIMARY KEY,
     sets_home int,
     sets_away int,
     games_home int,
@@ -38,7 +38,7 @@ create table team_matches(
 
 drop table if exists player_matches;
 create table player_matches(
-    id_player_match integer PRIMARY KEY,
+    id_player_match SERIAL PRIMARY KEY,
     sets_home int,
     sets_away int,
     games_home int,
@@ -47,7 +47,7 @@ create table player_matches(
 
 drop table if exists statistics;
 create table statistics(
-    id_stat int PRIMARY KEY,
+    id_stat SERIAL PRIMARY KEY,
     won_matches int,
     lost_matches int,
     won_sets int,
@@ -58,17 +58,20 @@ lost_games int
 
 drop table if exists users;
 create table users (
-    id_user     int PRIMARY KEY,
+    id_user     SERIAL PRIMARY KEY,
     id_stat     int,
     name        text,
     surname     text,
-    birth       timestamptz,
+    birth       date,
     sex         player_type,
     nationality text,
     type user_type,
     is_left_handed bool
 );
-alter table users add foreign key (id_stat) references statistics(id_stat);
+--alter table users add foreign key (id_stat) references statistics(id_stat);
+insert into users(id_stat, name, surname, birth, sex, nationality, type, is_left_handed) VALUES (
+                          0, 'admin', NULL, NULL, NULL, NULL, 'A', NULL
+                         );
 
 
 alter table teams add column id_stat int;
