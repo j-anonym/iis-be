@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public interface TournamentMapper {
 
     @Insert("INSERT INTO tournaments(prize, name, date_from, date_to, place, occupation, cost, capacity, is_singles, type, sponsors, id_staff) " +
-            "VALUES(#{prize}, #{name}, #{date_from}, #{date_to}, #{place}, #{occupation}, #{cost}, #{capacity}, #{is_singles}, #{type}, #{sponsors}, #{id_staff})")
+            "VALUES(#{prize}, #{name}, #{date_from}, #{date_to}, #{place}, #{occupation}, #{cost}, #{capacity}, #{is_singles}, #{type}, #{sponsors}, 1)")
     void insertNewTournament(Tournament tournament);
 }
