@@ -14,11 +14,13 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UserDetailsService;
 
 import fit.school.project.iis.model.AuthenticationRequest;
 import fit.school.project.iis.model.AuthenticationResponse;
 import fit.school.project.iis.config.AuthenticationTokenUtil;
+import fit.school.project.iis.model.UserDTO;
+import fit.school.project.iis.service.AuthenticationUserDetailsService;
 
 @RestController
 @CrossOrigin
@@ -31,7 +33,8 @@ public class AuthenticationController {
     private AuthenticationTokenUtil authenticationTokenUtil;
 
     @Autowired
-    private UserDetailsService authenticationInMemoryUserDetailsService;
+    private AuthenticationUserDetailsService authenticationInMemoryUserDetailsService;
+
     
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
@@ -46,6 +49,11 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(new AuthenticationResponse(token));
     }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+		return ResponseEntity.ok(authenticationInMemoryUserDetailsService.save(user));
+	}
 
     private void authenticate(String username, String password) throws Exception {
 		Objects.requireNonNull(username);
