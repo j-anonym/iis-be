@@ -4,14 +4,9 @@ import fit.school.project.iis.mapper.TournamentMapper;
 import fit.school.project.iis.model.Tournament;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 @Component
 @CrossOrigin(origins = "http://localhost:4200")
@@ -25,17 +20,25 @@ public class TournamentResource {
     }
 
     @RequestMapping(value = "/create", method={RequestMethod.GET, RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void insertNewTournament(@RequestBody Tournament json) throws ParseException {
+    public void insertNewTournament(@RequestBody Tournament json) {
 
-//        Date date_from = new SimpleDateFormat("dd/MM/yyyy").parse(json.getDate_from());
-//        Date date_to = new SimpleDateFormat("dd/MM/yyyy").parse(json.getDate_to());
-        System.out.println(json.getType());
-
-        Tournament tournament = new Tournament(
+        Tournament tournament = new Tournament( -1,
                 json.getPrize(), json.getName(), json.getDate_from(), json.getDate_to(), json.getPlace(), json.getOccupation(),
                 json.getCost(), json.getCapacity(), json.is_singles(), json.getType(), json.getSponsors(), json.getId_staff()
         );
 
         tournamentMapper.insertNewTournament(tournament);
+    }
+
+    @RequestMapping(value = "/getlast/{id_staff}", method=RequestMethod.GET)
+    public @ResponseBody int getLastCreatedTournament(@PathVariable("id_staff") int id_staff) {
+        return tournamentMapper.getLastCreatedTournament(id_staff);
+    }
+
+    @RequestMapping(value = "/getall/{id_user}", method=RequestMethod.GET)
+    public @ResponseBody List<Tournament> getAllTournamentsByUser(@PathVariable("id_user") int id_user) {
+//        System.out.println(id_user);
+//        tournamentMapper.getAllTournamentsByUser(id_user);
+        return tournamentMapper.getAllTournamentsByUser(id_user);
     }
 }

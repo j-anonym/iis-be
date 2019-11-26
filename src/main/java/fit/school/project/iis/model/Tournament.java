@@ -6,10 +6,11 @@ import java.util.Date;
 
 @Data
 public class Tournament {
+    private int id_tournament;
     private int prize;
     private String name;
-    private Date date_from;
-    private Date date_to;
+    private String date_from;
+    private String date_to;
     private String place;
     private int occupation;
     private int cost;
@@ -20,9 +21,10 @@ public class Tournament {
     private int id_staff;
 
     // constructor
-    public Tournament (int prize, String name, Date date_from, Date date_to, String place,
+    public Tournament (int id_tournament, int prize, String name, String date_from, String date_to, String place,
                        int occupation, int cost, int capacity, boolean is_singles, String type,
                        String sponsors, int id_staff) {
+        this.id_tournament = id_tournament;
         this.prize = prize;
         this.name = name;
         this.date_from = date_from;
