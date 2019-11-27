@@ -35,6 +35,11 @@ public class TournamentResource {
         return tournamentMapper.getLastCreatedTournament(id_staff);
     }
 
+    @RequestMapping(value = "/getall", method=RequestMethod.GET)
+    public @ResponseBody List<Tournament> getAllTournaments() {
+        return tournamentMapper.getAllTournaments();
+    }
+
     @RequestMapping(value = "/getall/{id_user}", method=RequestMethod.GET)
     public @ResponseBody List<Tournament> getAllTournamentsByUser(@PathVariable("id_user") int id_user) {
 //        System.out.println(id_user);

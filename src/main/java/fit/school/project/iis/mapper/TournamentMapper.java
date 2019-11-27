@@ -23,4 +23,7 @@ public interface TournamentMapper {
     @Select("SELECT * FROM tournaments WHERE id_staff = ${id_user};")
     List<Tournament> getAllTournamentsByUser(@Param("id_user") int id_user);
 
+    @Select("SELECT * FROM tournaments ORDER BY date_from DESC;")
+    List<Tournament> getAllTournaments();
+
 }
