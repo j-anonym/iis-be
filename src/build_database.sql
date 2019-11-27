@@ -4,6 +4,13 @@
 create type user_type as ENUM ('P','R','S', 'A');
 CREATE TYPE player_type as ENUM ('M','W','MW');
 
+drop table if exists accounts;
+create table accounts(
+    id integer PRIMARY KEY,
+    password varchar(255),
+    username varchar(255)
+);
+
 drop table if exists tournaments;
 create table tournaments(
     id_tournament SERIAL PRIMARY KEY,
