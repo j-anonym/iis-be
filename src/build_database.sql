@@ -58,7 +58,7 @@ create table statistics(
 
 drop table if exists users;
 create table users (
-    id       SERIAL PRIMARY KEY,
+    id_user       SERIAL PRIMARY KEY,
     password varchar(255),
     username varchar(255),
     id_stat     int,
