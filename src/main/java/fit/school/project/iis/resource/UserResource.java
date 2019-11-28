@@ -4,10 +4,7 @@ import fit.school.project.iis.mapper.UserMapper;
 import fit.school.project.iis.model.User;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class UserResource {
 
     private UserMapper userMapper;
 
-    public UserResource(UserMapper userMapper){
+    public UserResource(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
 
@@ -26,5 +23,11 @@ public class UserResource {
     @ResponseBody
     public List<User> findAll() {
         return userMapper.findAll();
+    }
+
+    @RequestMapping(value = "/delete/{id_user}", method = RequestMethod.DELETE)
+    public @ResponseBody
+    void deleteUser(@PathVariable("id_user") int id_user) {
+        userMapper.deleteUser(id_user);
     }
 }

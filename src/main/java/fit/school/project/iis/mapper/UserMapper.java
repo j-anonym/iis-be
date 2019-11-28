@@ -1,8 +1,10 @@
 package fit.school.project.iis.mapper;
 
 import fit.school.project.iis.model.User;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,7 +13,10 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("SELECT * FROM users;")
+    @Select("SELECT * FROM users where id_user > 1;")
     List<User> findAll();
+
+    @Delete("DELETE FROM users WHERE id_user = #{id_user}")
+    void deleteUser(@Param("id_user") int id_user);
 
 }
