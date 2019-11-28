@@ -9,12 +9,17 @@ import java.util.List;
 
 @Component
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/tournament")
+@RequestMapping("/api/tournament/team")
 public class TournamentTeamResource {
     private TournamentTeamMapper tournamentTeamMapper;
 
     public TournamentTeamResource(TournamentTeamMapper tournamentTeamMapper){
         this.tournamentTeamMapper = tournamentTeamMapper;
+    }
+
+    @RequestMapping(value = "/getall/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody List<TournamentTeam> getAll(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentTeamMapper.getAll(id_tournament);
     }
 
     @RequestMapping(value = "/getpending/{id_tournament}", method= RequestMethod.GET)

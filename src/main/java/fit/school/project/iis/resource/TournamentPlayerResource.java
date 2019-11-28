@@ -19,6 +19,11 @@ public class TournamentPlayerResource {
         this.tournamentPlayerMapper = tournamentPlayerMapper;
     }
 
+    @RequestMapping(value = "/getall/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody List<TournamentPlayer> getAll(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentPlayerMapper.getAll(id_tournament);
+    }
+
     @RequestMapping(value = "/getpending/{id_tournament}", method=RequestMethod.GET)
     public @ResponseBody List<TournamentPlayer> getPendingPlayers(@PathVariable("id_tournament") int id_tournament) {
         return tournamentPlayerMapper.getPendingPlayers(id_tournament);
@@ -30,7 +35,12 @@ public class TournamentPlayerResource {
     }
 
     @RequestMapping(value = "/join/{id_tournament}/{id_player}", method=RequestMethod.GET)
-    public void insertNewTournament(@PathVariable("id_tournament") int id_tournament, @PathVariable("id_player") int id_player) {
+    public void joinTournament(@PathVariable("id_tournament") int id_tournament, @PathVariable("id_player") int id_player) {
+        tournamentPlayerMapper.joinTournament(id_tournament, id_player);
+    }
+
+    @RequestMapping(value = "/joinreferee/{id_tournament}/{id_player}", method=RequestMethod.GET)
+    public void joinTournamentReferee(@PathVariable("id_tournament") int id_tournament, @PathVariable("id_player") int id_player) {
         tournamentPlayerMapper.joinTournament(id_tournament, id_player);
     }
 
