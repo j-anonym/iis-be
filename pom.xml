@@ -14,6 +14,7 @@
   <description>School project for Information Systems</description>
   <properties>
     <java.version>1.8</java.version>
+    <hibernate.version>5.4.2.Final</hibernate.version>
   </properties>
   <dependencies>
     <dependency>
