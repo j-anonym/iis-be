@@ -17,10 +17,16 @@ public interface TournamentMapper {
             "VALUES(#{prize}, #{name}, #{date_from}::date, #{date_to}::date, #{place}, #{occupation}, #{cost}, #{capacity}, #{is_singles}, #{type}::player_type, #{sponsors}, 1)")
     void insertNewTournament(Tournament tournament);
 
+    @Select("SELECT * FROM tournaments WHERE id_tournament = ${id_tournament}")
+    Tournament getTournament(int id_tournament);
+
     @Select("SELECT id_tournament FROM tournaments WHERE id_staff = 1 ORDER BY id_tournament DESC LIMIT 1")
     int getLastCreatedTournament(int id_staff);
 
     @Select("SELECT * FROM tournaments WHERE id_staff = ${id_user};")
     List<Tournament> getAllTournamentsByUser(@Param("id_user") int id_user);
+
+    @Select("SELECT * FROM tournaments ORDER BY date_from DESC;")
+    List<Tournament> getAllTournaments();
 
 }

@@ -30,9 +30,19 @@ public class TournamentResource {
         tournamentMapper.insertNewTournament(tournament);
     }
 
+    @RequestMapping(value = "/get/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody Tournament getTournament(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentMapper.getTournament(id_tournament);
+    }
+
     @RequestMapping(value = "/getlast/{id_staff}", method=RequestMethod.GET)
     public @ResponseBody int getLastCreatedTournament(@PathVariable("id_staff") int id_staff) {
         return tournamentMapper.getLastCreatedTournament(id_staff);
+    }
+
+    @RequestMapping(value = "/getall", method=RequestMethod.GET)
+    public @ResponseBody List<Tournament> getAllTournaments() {
+        return tournamentMapper.getAllTournaments();
     }
 
     @RequestMapping(value = "/getall/{id_user}", method=RequestMethod.GET)
