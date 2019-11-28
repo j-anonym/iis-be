@@ -6,7 +6,7 @@ CREATE TYPE player_type as ENUM ('M','W','MW');
 
 drop table if exists accounts;
 create table accounts(
-                         id integer PRIMARY KEY,
+                         id SERIAL PRIMARY KEY,
                          password varchar(255),
                          username varchar(255)
 );
