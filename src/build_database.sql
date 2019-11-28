@@ -1,7 +1,7 @@
 --blah blah blah
 
 --types
-create type user_type as ENUM ('P','R','S', 'A');
+create type user_type as ENUM ('P','R','S');
 CREATE TYPE player_type as ENUM ('M','W','MW');
 
 drop table if exists accounts;
@@ -72,12 +72,12 @@ create table users (
     birth       date,
     sex         player_type,
     nationality text,
-    type user_type,
+    is_admin bool not null default false,
     is_left_handed bool
 );
 --alter table users add foreign key (id_stat) references statistics(id_stat);
-insert into users(id_stat, name, surname, birth, sex, nationality, type, is_left_handed) VALUES (
-                          0, 'admin', NULL, NULL, NULL, NULL, 'A', NULL
+insert into users(id_stat, name, surname, birth, sex, nationality, is_admin, is_left_handed) VALUES (
+                          0, 'admin', NULL, NULL, NULL, NULL, true, NULL
                          );
 
 
@@ -137,6 +137,7 @@ alter table team_tournament ADD FOREIGN KEY (id_team) REFERENCES teams(id_team);
 
 create table player_tournament(
     id_player int,
+    type user_type,
     id_tournament int,
     is_confirmed bool
 );
