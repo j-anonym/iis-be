@@ -1,85 +1,80 @@
 --blah blah blah
 
 --types
-create type user_type as ENUM ('P','R','S', 'A');
+create type user_type as ENUM ('P','R','S');
 CREATE TYPE player_type as ENUM ('M','W','MW');
-
-drop table if exists accounts;
-create table accounts(
-    id integer PRIMARY KEY,
-    password varchar(255),
-    username varchar(255)
-);
 
 drop table if exists tournaments;
 create table tournaments(
-    id_tournament SERIAL PRIMARY KEY,
-    prize integer,
-    name text,
-    date_from date,
-    date_to date,
-    place text,
-    occupation integer,
-    cost integer,
-    capacity integer,
-    is_singles bool,
-    type player_type,
-    sponsors text
+                            id_tournament SERIAL PRIMARY KEY,
+                            prize integer,
+                            name text,
+                            date_from date,
+                            date_to date,
+                            place text,
+                            occupation integer,
+                            cost integer,
+                            capacity integer,
+                            is_singles bool,
+                            type player_type,
+                            sponsors text
 );
 
 drop table if exists teams;
 create table teams(
-    id_team SERIAL PRIMARY KEY,
-    name text,
-    logo text
+                      id_team SERIAL PRIMARY KEY,
+                      name text,
+                      logo text
 );
 
 drop table if exists team_matches;
 create table team_matches(
-    id_team_match SERIAL PRIMARY KEY,
-    sets_home int,
-    sets_away int,
-    games_home int,
-    games_away int
+                             id_team_match SERIAL PRIMARY KEY,
+                             sets_home int,
+                             sets_away int,
+                             games_home int,
+                             games_away int
 );
 
 drop table if exists player_matches;
 create table player_matches(
-    id_player_match SERIAL PRIMARY KEY,
-    sets_home int,
-    sets_away int,
-    games_home int,
-    games_away int
+                               id_player_match SERIAL PRIMARY KEY,
+                               sets_home int,
+                               sets_away int,
+                               games_home int,
+                               games_away int
 );
 
 drop table if exists statistics;
 create table statistics(
-    id_stat SERIAL PRIMARY KEY,
-    won_matches int,
-    lost_matches int,
-    won_sets int,
-    lost_sets int,
-won_games int,
-lost_games int
+                           id_stat SERIAL PRIMARY KEY,
+                           won_matches int,
+                           lost_matches int,
+                           won_sets int,
+                           lost_sets int,
+                           won_games int,
+                           lost_games int
 );
 
 drop table if exists users;
 create table users (
-    id_user     SERIAL PRIMARY KEY,
+    id       SERIAL PRIMARY KEY,
+    password varchar(255),
+    username varchar(255),
     id_stat     int,
     name        text,
     surname     text,
     birth       date,
     sex         player_type,
     nationality text,
-    type user_type,
+    is_admin bool not null default false,
     is_left_handed bool
 );
 --alter table users add foreign key (id_stat) references statistics(id_stat);
-insert into users(id_stat, name, surname, birth, sex, nationality, type, is_left_handed) VALUES (
-                          0, 'admin', NULL, NULL, NULL, NULL, 'A', NULL
+insert into users(id_stat, name, surname, birth, sex, nationality, is_admin, is_left_handed) VALUES (
+                          0, 'admin', NULL, NULL, NULL, NULL, true, NULL
                          );
-
+--alter table users add foreign key (id_stat) references statistics(id_stat);
 
 alter table teams add column id_stat int;
 alter table teams add foreign key (id_stat) references statistics(id_stat);
@@ -127,9 +122,9 @@ alter table tournaments add foreign key (id_staff) references users(id_user);
 
 
 create table team_tournament(
-    id_team int,
-    id_tournament int,
-    is_confirmed bool
+                                id_team int,
+                                id_tournament int,
+                                is_confirmed bool
 );
 
 alter table team_tournament ADD FOREIGN KEY (id_tournament) REFERENCES tournaments(id_tournament);
@@ -137,10 +132,10 @@ alter table team_tournament ADD FOREIGN KEY (id_team) REFERENCES teams(id_team);
 
 create table player_tournament(
     id_player int,
+    type user_type,
     id_tournament int,
     is_confirmed bool
 );
 
 alter table player_tournament ADD FOREIGN KEY (id_tournament) REFERENCES tournaments(id_tournament);
 alter table player_tournament ADD FOREIGN KEY (id_player) REFERENCES users(id_user);
-
