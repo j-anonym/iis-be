@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("SELECT * FROM users;")
+    @Select("SELECT * FROM users where id_user > 1;")
     List<User> findAll();
 
     @Delete("DELETE FROM users WHERE id_user = #{id_user}")
