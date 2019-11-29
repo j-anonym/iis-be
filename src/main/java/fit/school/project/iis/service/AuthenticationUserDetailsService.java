@@ -49,7 +49,6 @@ public class AuthenticationUserDetailsService implements UserDetailsService {
 		newAccount.setName(account.getName());
 		newAccount.setSurname(account.getSurname());
 		newAccount.setNationality(account.getNationality());
-		newAccount.setBirthdate(account.getBirthdate());
 		return accountRepository.save(newAccount);
 	}
 
