@@ -140,10 +140,16 @@ create table player_tournament(
 alter table player_tournament ADD FOREIGN KEY (id_tournament) REFERENCES tournaments(id_tournament);
 alter table player_tournament ADD FOREIGN KEY (id_player) REFERENCES users(id_user);
 
-create or replace function generate_matches() returns trigger AS
+create or replace function update_occupation() returns trigger AS
 $$
 BEGIN
+    IF (NEW.is_confirmed = TRUE) AND (NEW.type = 'P') THEN
+        UPDATE tournaments
+        SET occupation = occupation + 1
+        WHERE id_tournament = NEW.id_tournament;
+    END IF;
 
+    RETURN NEW;
 END
 $$
     language plpgsql;
