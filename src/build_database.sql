@@ -182,3 +182,44 @@ CREATE TRIGGER trigger_update_occupation
     AFTER UPDATE ON team_tournament
     FOR EACH ROW
     EXECUTE PROCEDURE update_occupation_teams();
+
+create or replace function generate_matches() returns trigger AS
+$$
+DECLARE
+    cap     INTEGER;
+    counter INTEGER := 0;
+
+BEGIN
+    SELECT new.capacity into cap;
+
+    LOOP
+        --count number of matches
+        cap = cap / 2;
+        counter := counter + cap;
+        EXIT WHEN cap = 1;
+    END LOOP;
+
+    LOOP
+        EXIT WHEN counter = 0;
+        IF (new.is_singles) THEN
+            INSERT INTO player_matches(id_tournament) VALUES (new.id_tournament);
+        ELSE
+            INSERT INTO team_matches(id_tournament) VALUES (new.id_tournament);
+        END IF;
+        SELECT counter - 1 INTO counter;
+    END LOOP;
+
+    RETURN NEW;
+END
+$$
+    language plpgsql;
+
+
+drop trigger if exists trigger_update_occupation on player_tournament;
+
+CREATE TRIGGER trigger_generate_matches
+    AFTER INSERT
+    ON tournaments
+    FOR EACH ROW
+EXECUTE PROCEDURE generate_matches();
+
