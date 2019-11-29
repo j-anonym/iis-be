@@ -42,7 +42,7 @@ public class UserResource {
     @RequestMapping(value = "/update", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateUser(@RequestBody User json) {
         User user = new User(json.getId_user(), json.getId_stat(), json.getName(), json.getSurname(), json.getBirth(),
-                json.getSex(), json.getNationality(), json.is_admin(), json.is_left_handed());
+                json.getSex(), json.getNationality(), json.is_admin(), json.getIs_left_handed());
         int count = userMapper.updateUser(user);
         System.out.println(count);
     }

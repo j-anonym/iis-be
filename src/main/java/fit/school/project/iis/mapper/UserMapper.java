@@ -30,9 +30,3 @@ public interface UserMapper {
             "WHERE id_user = #{id_user}; ")
     int updateUser(User user);
 }
-
-//    @Update("UPDATE users SET name = #{name};")
-//    void updateUser(User_tmp user);
-//}
-   
-
