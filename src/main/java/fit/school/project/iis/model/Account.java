@@ -21,8 +21,6 @@ public class Account {
 	@Column
 	private String surname;
 	@Column
-	private Date birthdate;
-	@Column
 	private String nationality;
 
 	public String getUsername() {
@@ -55,14 +53,6 @@ public class Account {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	public Date getBirthdate() {
-        return birthdate;
-	}
-
-	public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
 	}
 	
 	public String getNationality() {
