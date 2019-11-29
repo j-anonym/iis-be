@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Component
+@RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/tournament")
 public class TournamentResource {
@@ -30,15 +31,28 @@ public class TournamentResource {
         tournamentMapper.insertNewTournament(tournament);
     }
 
+    @RequestMapping(value = "/get/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody Tournament getTournament(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentMapper.getTournament(id_tournament);
+    }
+
     @RequestMapping(value = "/getlast/{id_staff}", method=RequestMethod.GET)
     public @ResponseBody int getLastCreatedTournament(@PathVariable("id_staff") int id_staff) {
         return tournamentMapper.getLastCreatedTournament(id_staff);
     }
 
+    @RequestMapping(value = "/getall", method=RequestMethod.GET)
+    public @ResponseBody List<Tournament> getAllTournaments() {
+        return tournamentMapper.getAllTournaments();
+    }
+
     @RequestMapping(value = "/getall/{id_user}", method=RequestMethod.GET)
     public @ResponseBody List<Tournament> getAllTournamentsByUser(@PathVariable("id_user") int id_user) {
-//        System.out.println(id_user);
-//        tournamentMapper.getAllTournamentsByUser(id_user);
         return tournamentMapper.getAllTournamentsByUser(id_user);
+    }
+
+    @RequestMapping(value = "delete/{id_tournament}", method=RequestMethod.DELETE)
+    public @ResponseBody void deleteTournament(@PathVariable("id_tournament") int id_tournament) {
+        tournamentMapper.deleteTournament(id_tournament);
     }
 }

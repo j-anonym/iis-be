@@ -74,6 +74,7 @@ create table users (
 insert into users(id_stat, name, surname, birth, sex, nationality, is_admin, is_left_handed) VALUES (
                           0, 'admin', NULL, NULL, NULL, NULL, true, NULL
                          );
+
 --alter table users add foreign key (id_stat) references statistics(id_stat);
 
 alter table teams add column id_stat int;
@@ -139,3 +140,86 @@ create table player_tournament(
 
 alter table player_tournament ADD FOREIGN KEY (id_tournament) REFERENCES tournaments(id_tournament);
 alter table player_tournament ADD FOREIGN KEY (id_player) REFERENCES users(id_user);
+
+create or replace function update_occupation() returns trigger AS
+$$
+BEGIN
+    IF (NEW.is_confirmed = TRUE) AND (NEW.type = 'P') THEN
+        UPDATE tournaments
+        SET occupation = occupation + 1
+        WHERE id_tournament = NEW.id_tournament;
+    END IF;
+
+    RETURN NEW;
+END
+$$
+    language plpgsql;
+
+create or replace function update_occupation_teams() returns trigger AS
+$$
+BEGIN
+    IF (NEW.is_confirmed = TRUE) THEN
+        UPDATE tournaments
+        SET occupation = occupation + 1
+        WHERE id_tournament = NEW.id_tournament;
+    END IF;
+
+    RETURN NEW;
+END
+$$
+    language plpgsql;
+
+
+drop trigger if exists  trigger_update_occupation on player_tournament;
+
+CREATE TRIGGER trigger_update_occupation
+    AFTER UPDATE ON player_tournament
+    FOR EACH ROW
+    EXECUTE PROCEDURE update_occupation();
+
+drop trigger if exists  trigger_update_occupation on team_tournament;
+
+CREATE TRIGGER trigger_update_occupation
+    AFTER UPDATE ON team_tournament
+    FOR EACH ROW
+    EXECUTE PROCEDURE update_occupation_teams();
+
+create or replace function generate_matches() returns trigger AS
+$$
+DECLARE
+    cap     INTEGER;
+    counter INTEGER := 0;
+
+BEGIN
+    SELECT new.capacity into cap;
+
+    LOOP
+        --count number of matches
+        cap = cap / 2;
+        counter := counter + cap;
+        EXIT WHEN cap = 1;
+    END LOOP;
+
+    LOOP
+        EXIT WHEN counter = 0;
+        IF (new.is_singles) THEN
+            INSERT INTO player_matches(id_tournament) VALUES (new.id_tournament);
+        ELSE
+            INSERT INTO team_matches(id_tournament) VALUES (new.id_tournament);
+        END IF;
+        SELECT counter - 1 INTO counter;
+    END LOOP;
+
+    RETURN NEW;
+END
+$$
+    language plpgsql;
+
+
+drop trigger if exists trigger_update_occupation on player_tournament;
+
+CREATE TRIGGER trigger_generate_matches
+    AFTER INSERT
+    ON tournaments
+    FOR EACH ROW
+EXECUTE PROCEDURE generate_matches();

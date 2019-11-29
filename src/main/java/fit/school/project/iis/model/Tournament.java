@@ -2,8 +2,6 @@ package fit.school.project.iis.model;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class Tournament {
     private int id_tournament;
