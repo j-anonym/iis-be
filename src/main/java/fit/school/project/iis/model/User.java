@@ -13,9 +13,9 @@ public class User {
     private String sex;
     private String nationality;
     private boolean is_admin;
-    private boolean is_left_handed;
+    private Boolean is_left_handed;
 
-    public User(int id_user, int id_stat, String name, String surname, String birth, String sex, String nationality, boolean is_admin, boolean is_left_handed) {
+    public User(int id_user, int id_stat, String name, String surname, String birth, String sex, String nationality, boolean is_admin, Boolean is_left_handed) {
         this.id_user = id_user;
         this.id_stat = id_stat;
         this.name = name;
