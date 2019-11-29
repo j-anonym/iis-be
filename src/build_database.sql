@@ -77,8 +77,9 @@ create table users
     is_left_handed bool
 );
 alter table users add foreign key (id_stat) references statistics(id_stat);
+INSERT INTO statistics (won_matches, lost_matches, won_sets, lost_sets, won_games, lost_games) VALUES (0,0,0,0,0,0);
 insert into users(id_stat, name, surname, birth, sex, nationality, is_admin, is_left_handed)
-VALUES (0, 'admin', NULL, NULL, NULL, NULL, true, NULL);
+VALUES (1, 'admin', NULL, NULL, NULL, NULL, true, NULL);
 
 alter table teams
     add column id_stat int;
