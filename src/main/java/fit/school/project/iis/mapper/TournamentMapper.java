@@ -1,10 +1,7 @@
 package fit.school.project.iis.mapper;
 
 import fit.school.project.iis.model.Tournament;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,5 +25,8 @@ public interface TournamentMapper {
 
     @Select("SELECT * FROM tournaments ORDER BY date_from DESC;")
     List<Tournament> getAllTournaments();
+
+    @Delete("DELETE FROM tournaments WHERE id_tournament = ${id_tournament};")
+    void deleteTournament(@Param("id_tournament") int id_tournament);
 
 }
