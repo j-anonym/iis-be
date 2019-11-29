@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "us")
 public class Account {
 
 	@Id
@@ -72,8 +72,5 @@ public class Account {
 	public void setNationality(String nationality) {
 		this.nationality = nationality;
 	}
-
-
- 
 
 }

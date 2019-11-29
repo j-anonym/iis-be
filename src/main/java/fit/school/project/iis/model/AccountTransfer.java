@@ -1,5 +1,4 @@
 package fit.school.project.iis.model;
-import java.util.Date;
 
 public class AccountTransfer {
 	private String username;
@@ -7,7 +6,6 @@ public class AccountTransfer {
 	private String name;
 	private String surname;
 	private String nationality;
-	private Date birthdate;
 
 
 	public String getUsername() {
@@ -40,14 +38,6 @@ public class AccountTransfer {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	public Date getBirthdate() {
-        return birthdate;
-	}
-
-	public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
 	}
 	
 	public String getNationality() {
