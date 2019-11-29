@@ -26,7 +26,7 @@ public interface TournamentMapper {
     @Select("SELECT * FROM tournaments ORDER BY date_from DESC;")
     List<Tournament> getAllTournaments();
 
-    @Delete("DELETE FROM tournaments WHERE id_tournament = ${id_tournament} CASCADE;")
+    @Delete("DELETE FROM tournaments WHERE id_tournament = ${id_tournament};")
     void deleteTournament(@Param("id_tournament") int id_tournament);
 
 }
