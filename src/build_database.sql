@@ -4,13 +4,6 @@
 create type user_type as ENUM ('P','R','S');
 CREATE TYPE player_type as ENUM ('M','W','MW');
 
-drop table if exists accounts;
-create table accounts(
-    id SERIAL PRIMARY KEY,
-    password varchar(255),
-    username varchar(255)
-);
-
 drop table if exists tournaments;
 create table tournaments(
                             id_tournament SERIAL PRIMARY KEY,
@@ -65,7 +58,9 @@ create table statistics(
 
 drop table if exists users;
 create table users (
-    id_user     SERIAL PRIMARY KEY,
+    id_user       SERIAL PRIMARY KEY,
+    password varchar(255),
+    username varchar(255),
     id_stat     int,
     name        text,
     surname     text,
@@ -144,4 +139,3 @@ create table player_tournament(
 
 alter table player_tournament ADD FOREIGN KEY (id_tournament) REFERENCES tournaments(id_tournament);
 alter table player_tournament ADD FOREIGN KEY (id_player) REFERENCES users(id_user);
-
