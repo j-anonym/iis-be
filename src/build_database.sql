@@ -139,3 +139,4 @@ create table player_tournament(
 
 alter table player_tournament ADD FOREIGN KEY (id_tournament) REFERENCES tournaments(id_tournament);
 alter table player_tournament ADD FOREIGN KEY (id_player) REFERENCES users(id_user);
+
