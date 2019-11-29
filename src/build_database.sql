@@ -58,22 +58,23 @@ create table statistics(
 
 drop table if exists users;
 create table users (
-                       id_user       SERIAL PRIMARY KEY,
-                       password varchar(255),
-                       username varchar(255),
-                       id_stat     int,
-                       name        text,
-                       surname     text,
-                       birth       date,
-                       sex         player_type,
-                       nationality text,
-                       is_admin bool not null default false,
-                       is_left_handed bool
+    id_user       SERIAL PRIMARY KEY,
+    password varchar(255),
+    username varchar(255),
+    id_stat     int,
+    name        text,
+    surname     text,
+    birth       date,
+    sex         player_type,
+    nationality text,
+    is_admin bool not null default false,
+    is_left_handed bool
 );
 --alter table users add foreign key (id_stat) references statistics(id_stat);
 insert into users(id_stat, name, surname, birth, sex, nationality, is_admin, is_left_handed) VALUES (
-                                                                                                        0, 'admin', NULL, NULL, NULL, NULL, true, NULL
-                                                                                                    );
+                          0, 'admin', NULL, NULL, NULL, NULL, true, NULL
+                         );
+
 --alter table users add foreign key (id_stat) references statistics(id_stat);
 
 alter table teams add column id_stat int;
@@ -131,10 +132,10 @@ alter table team_tournament ADD FOREIGN KEY (id_tournament) REFERENCES tournamen
 alter table team_tournament ADD FOREIGN KEY (id_team) REFERENCES teams(id_team);
 
 create table player_tournament(
-                                  id_player int,
-                                  type user_type,
-                                  id_tournament int,
-                                  is_confirmed bool
+    id_player int,
+    type user_type,
+    id_tournament int,
+    is_confirmed bool
 );
 
 alter table player_tournament ADD FOREIGN KEY (id_tournament) REFERENCES tournaments(id_tournament);
@@ -222,4 +223,3 @@ CREATE TRIGGER trigger_generate_matches
     ON tournaments
     FOR EACH ROW
 EXECUTE PROCEDURE generate_matches();
-

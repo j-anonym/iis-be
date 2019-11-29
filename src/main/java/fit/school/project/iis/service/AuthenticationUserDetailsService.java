@@ -46,6 +46,9 @@ public class AuthenticationUserDetailsService implements UserDetailsService {
 		Account newAccount = new Account();
 		newAccount.setUsername(account.getUsername());
 		newAccount.setPassword(bcryptEncoder.encode(account.getPassword()));
+		newAccount.setName(account.getName());
+		newAccount.setSurname(account.getSurname());
+		newAccount.setNationality(account.getNationality());
 		return accountRepository.save(newAccount);
 	}
 
