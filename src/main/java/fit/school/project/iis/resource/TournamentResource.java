@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Component
+@RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/tournament")
 public class TournamentResource {

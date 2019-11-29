@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Component
+@RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/tournament/team")
 public class TournamentTeamResource {
@@ -37,12 +38,12 @@ public class TournamentTeamResource {
         tournamentTeamMapper.joinTournament(id_tournament, id_team);
     }
 
-    @RequestMapping(value = "/accept/{id_tournament}/{id_team}", method=RequestMethod.GET)
+    @RequestMapping(value = "/accept/{id_tournament}/{id_team}", method=RequestMethod.PUT)
     public void acceptTeam(@PathVariable("id_tournament") int id_tournament, @PathVariable("id_team") int id_team) {
         tournamentTeamMapper.acceptTeam(id_tournament, id_team);
     }
 
-    @RequestMapping(value = "/decline/{id_tournament}/{id_team}", method=RequestMethod.GET)
+    @RequestMapping(value = "/decline/{id_tournament}/{id_team}", method=RequestMethod.DELETE)
     public void declineTeam(@PathVariable("id_tournament") int id_tournament, @PathVariable("id_team") int id_team) {
         tournamentTeamMapper.declineTeam(id_tournament, id_team);
     }

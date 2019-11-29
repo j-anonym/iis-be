@@ -35,6 +35,6 @@ public interface TournamentPlayerMapper {
     @Update("UPDATE player_tournament SET is_confirmed=true WHERE id_player=${id_player} AND id_tournament=${id_tournament}")
     void acceptPlayer(@Param("id_player") int id_player, @Param("id_tournament") int id_tournament);
 
-    @Delete("DELETE FROM player_tournament WHERE id_player=${id_player} AND id_tournament=${id_tournament}")
+    @Delete("DELETE FROM player_tournament WHERE id_player=#{id_player}::integer AND id_tournament=#{id_tournament}::integer")
     void declinePlayer(@Param("id_player") int id_player, @Param("id_tournament") int id_tournament);
 }

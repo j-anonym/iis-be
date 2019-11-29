@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Component
-@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@CrossOrigin(origins ="*")
 @RequestMapping("/api/tournament/player")
 public class TournamentPlayerResource {
 
@@ -29,6 +30,11 @@ public class TournamentPlayerResource {
         return tournamentPlayerMapper.getPendingPlayers(id_tournament);
     }
 
+    @RequestMapping(value = "/getpendingreferee/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody List<TournamentPlayer> getPendingReferees(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentPlayerMapper.getPendingReferees(id_tournament);
+    }
+
     @RequestMapping(value = "/getaccepted/{id_tournament}", method=RequestMethod.GET)
     public @ResponseBody List<TournamentPlayer> getAcceptedPlayers(@PathVariable("id_tournament") int id_tournament) {
         return tournamentPlayerMapper.getAcceptedPlayers(id_tournament);
@@ -44,14 +50,13 @@ public class TournamentPlayerResource {
         tournamentPlayerMapper.joinTournament(id_tournament, id_player);
     }
 
-    @RequestMapping(value = "/accept/{id_tournament}/{id_player}", method=RequestMethod.GET)
+    @RequestMapping(value = "/accept/{id_tournament}/{id_player}", method=RequestMethod.PUT)
     public void acceptPlayer(@PathVariable("id_tournament") int id_tournament, @PathVariable("id_player") int id_player) {
-        tournamentPlayerMapper.acceptPlayer(id_tournament, id_player);
+        tournamentPlayerMapper.acceptPlayer(id_player, id_tournament);
     }
 
-    @RequestMapping(value = "/decline/{id_tournament}/{id_player}", method=RequestMethod.GET)
+    @RequestMapping(value = "/decline/{id_tournament}/{id_player}", method=RequestMethod.DELETE)
     public void declinePlayer(@PathVariable("id_tournament") int id_tournament, @PathVariable("id_player") int id_player) {
-        tournamentPlayerMapper.declinePlayer(id_tournament, id_player);
+        tournamentPlayerMapper.declinePlayer(id_player, id_tournament);
     }
-
 }
