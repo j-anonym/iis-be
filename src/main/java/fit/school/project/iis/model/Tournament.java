@@ -16,12 +16,12 @@ public class Tournament {
     private boolean is_singles;
     private String type;
     private String sponsors;
-    private int id_staff;
+    private Integer id_staff;
 
     // constructor
     public Tournament (int id_tournament, int prize, String name, String date_from, String date_to, String place,
                        int occupation, int cost, int capacity, boolean is_singles, String type,
-                       String sponsors, int id_staff) {
+                       String sponsors, Integer id_staff) {
         this.id_tournament = id_tournament;
         this.prize = prize;
         this.name = name;
