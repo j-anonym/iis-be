@@ -29,4 +29,13 @@ public interface UserMapper {
             "nationality = #{nationality}, is_admin = #{is_admin}, is_left_handed = #{is_left_handed}" +
             "WHERE id_user = #{id_user}; ")
     int updateUser(User user);
+
+    @Select("SELECT id_user FROM users WHERE username = #{username}")
+    int getLoggedUserId(@Param("username") String username);
+
+    @Select("SELECT is_admin FROM users WHERE username = #{username}")
+    boolean getLoggedUserAdminStatus(@Param("username") String username);
+
+    //@Select("SELECT id_tournament FROM tournaments WHERE id_staff = 1 ORDER BY id_tournament DESC LIMIT 1")
+    //int getLastCreatedTournament(int id_staff);
 }
