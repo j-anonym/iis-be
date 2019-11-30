@@ -76,10 +76,13 @@ create table users
     is_admin       bool not null default false,
     is_left_handed bool
 );
-alter table users add foreign key (id_stat) references statistics(id_stat);
-INSERT INTO statistics (won_matches, lost_matches, won_sets, lost_sets, won_games, lost_games) VALUES (0,0,0,0,0,0);
+alter table users
+    add foreign key (id_stat) references statistics (id_stat);
+INSERT INTO statistics (won_matches, lost_matches, won_sets, lost_sets, won_games, lost_games)
+VALUES (0, 0, 0, 0, 0, 0);
 insert into users(id_stat, name, username, password, surname, birth, sex, nationality, is_admin, is_left_handed)
-VALUES (1, NULL, 'admin', '$2a$10$BHOa/UosYva6e.Mnff0GdOdsUonuFYFatfhv0XHEeY8osP7d8VFO2', NULL, NULL, NULL, NULL, true, NULL);
+VALUES (1, NULL, 'admin', '$2a$10$BHOa/UosYva6e.Mnff0GdOdsUonuFYFatfhv0XHEeY8osP7d8VFO2', NULL, NULL, NULL, NULL, true,
+        NULL);
 
 alter table teams
     add column id_stat int;
@@ -266,7 +269,8 @@ $$
 DECLARE
     id INTEGER;
 BEGIN
-    INSERT INTO statistics (won_matches, lost_matches, won_sets, lost_sets, won_games, lost_games) VALUES (0,0,0,0,0,0)
+    INSERT INTO statistics (won_matches, lost_matches, won_sets, lost_sets, won_games, lost_games)
+    VALUES (0, 0, 0, 0, 0, 0)
     RETURNING id_stat INTO id;
     UPDATE users SET id_stat = id WHERE id_user = new.id_user;
     RETURN new;
@@ -283,6 +287,27 @@ CREATE TRIGGER trigger_generate_statistics
     FOR EACH ROW
 EXECUTE PROCEDURE generate_statistics();
 
+create or replace function generate_statistics_teams() returns trigger AS
+$$
+DECLARE
+    id INTEGER;
+BEGIN
+    INSERT INTO statistics (won_matches, lost_matches, won_sets, lost_sets, won_games, lost_games)
+    VALUES (0, 0, 0, 0, 0, 0)
+    RETURNING id_stat INTO id;
+    UPDATE teams SET id_stat = id WHERE id_team = new.id_team;
+    RETURN new;
+END
+$$
+    language plpgsql;
+
+drop trigger if exists trigger_generate_statistics on teams;
+
+CREATE TRIGGER trigger_generate_statistics
+    AFTER INSERT
+    ON teams
+    FOR EACH ROW
+EXECUTE PROCEDURE generate_statistics_teams();
 
 create or replace function update_statistics() returns trigger AS
 $$
@@ -294,7 +319,8 @@ DECLARE
     sets_away  INTEGER;
     games_home INTEGER;
     games_away INTEGER;
-
+    won_home   INTEGER;
+    lost_home  INTEGER;
 BEGIN
     SELECT old.id_tournament, old.id_user_home, old.id_user_away INTO id_tour, id_home, id_away;
 
@@ -309,19 +335,29 @@ BEGIN
            coalesce(new.sets_home, 0) - coalesce(old.sets_home, 0)
     INTO games_away, games_home, sets_away, sets_home;
 
+    IF (sets_home >= sets_away) THEN
+        SELECT 1, 0 INTO won_home, lost_home;
+    ELSE
+        SELECT 1, 0 INTO lost_home, won_home;
+    END IF;
+
     raise notice '%, %, %, %', games_away, games_home, sets_away, sets_home;
     UPDATE statistics
     SET won_games  = won_games + games_home,
         won_sets   = won_sets + sets_home,
         lost_games = lost_games + games_away,
-        lost_sets  = lost_sets + sets_away
+        lost_sets  = lost_sets + sets_away,
+        won_matches = won_matches + won_home,
+        lost_matches = lost_matches + lost_home
     WHERE id_stat = (SELECT id_stat FROM users WHERE id_user = id_home);
 
     UPDATE statistics
     SET won_games  = won_games + games_away,
         won_sets   = won_sets + sets_away,
         lost_games = lost_games + games_home,
-        lost_sets  = lost_sets + sets_home
+        lost_sets  = lost_sets + sets_home,
+        won_matches = won_matches + lost_home,
+        lost_matches = lost_matches + won_home
     WHERE id_stat = (SELECT id_stat FROM users WHERE id_user = id_away);
     return new;
 END
@@ -347,6 +383,8 @@ DECLARE
     sets_away  INTEGER;
     games_home INTEGER;
     games_away INTEGER;
+    won_home   INTEGER;
+    lost_home  INTEGER;
 
 BEGIN
     SELECT old.id_tournament, old.id_team_home, old.id_team_away INTO id_tour, id_home, id_away;
@@ -362,19 +400,29 @@ BEGIN
            coalesce(new.sets_home, 0) - coalesce(old.sets_home, 0)
     INTO games_away, games_home, sets_away, sets_home;
 
+    IF (sets_home >= sets_away) THEN
+        SELECT 1, 0 INTO won_home, lost_home;
+    ELSE
+        SELECT 1, 0 INTO lost_home, won_home;
+    END IF;
+
     raise notice '%, %, %, %', games_away, games_home, sets_away, sets_home;
     UPDATE statistics
     SET won_games  = won_games + games_home,
         won_sets   = won_sets + sets_home,
         lost_games = lost_games + games_away,
-        lost_sets  = lost_sets + sets_away
+        lost_sets  = lost_sets + sets_away,
+        won_matches = won_matches + won_home,
+        lost_matches = lost_matches + lost_home
     WHERE id_stat = (SELECT id_stat FROM teams WHERE id_team = id_home);
 
     UPDATE statistics
     SET won_games  = won_games + games_away,
         won_sets   = won_sets + sets_away,
         lost_games = lost_games + games_home,
-        lost_sets  = lost_sets + sets_home
+        lost_sets  = lost_sets + sets_home,
+        won_matches = won_matches + lost_home,
+        lost_matches = lost_matches + won_home
     WHERE id_stat = (SELECT id_stat FROM teams WHERE id_team = id_away);
     return new;
 END
@@ -388,5 +436,3 @@ CREATE TRIGGER trigger_update_statistics
     ON team_matches
     FOR EACH ROW
 EXECUTE PROCEDURE update_statistics_team();
-
-
