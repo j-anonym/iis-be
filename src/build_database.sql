@@ -78,8 +78,8 @@ create table users
 );
 alter table users add foreign key (id_stat) references statistics(id_stat);
 INSERT INTO statistics (won_matches, lost_matches, won_sets, lost_sets, won_games, lost_games) VALUES (0,0,0,0,0,0);
-insert into users(id_stat, name, surname, birth, sex, nationality, is_admin, is_left_handed)
-VALUES (1, 'admin', NULL, NULL, NULL, NULL, true, NULL);
+insert into users(id_stat, name, username, password, surname, birth, sex, nationality, is_admin, is_left_handed)
+VALUES (1, NULL, 'admin', '$2a$10$BHOa/UosYva6e.Mnff0GdOdsUonuFYFatfhv0XHEeY8osP7d8VFO2', NULL, NULL, NULL, NULL, true, NULL);
 
 alter table teams
     add column id_stat int;
@@ -282,4 +282,111 @@ CREATE TRIGGER trigger_generate_statistics
     ON users
     FOR EACH ROW
 EXECUTE PROCEDURE generate_statistics();
+
+
+create or replace function update_statistics() returns trigger AS
+$$
+DECLARE
+    id_tour    INTEGER;
+    id_home    INTEGER;
+    id_away    INTEGER;
+    sets_home  INTEGER;
+    sets_away  INTEGER;
+    games_home INTEGER;
+    games_away INTEGER;
+
+BEGIN
+    SELECT old.id_tournament, old.id_user_home, old.id_user_away INTO id_tour, id_home, id_away;
+
+    IF (COALESCE(id_home, id_away) IS NULL) THEN
+        raise notice 'dont have id';
+        RETURN new;
+    END IF;
+
+    SELECT coalesce(new.games_away, 0) - coalesce(old.games_away, 0),
+           coalesce(new.games_home, 0) - coalesce(old.games_home, 0),
+           coalesce(new.sets_away, 0) - coalesce(old.sets_away, 0),
+           coalesce(new.sets_home, 0) - coalesce(old.sets_home, 0)
+    INTO games_away, games_home, sets_away, sets_home;
+
+    raise notice '%, %, %, %', games_away, games_home, sets_away, sets_home;
+    UPDATE statistics
+    SET won_games  = won_games + games_home,
+        won_sets   = won_sets + sets_home,
+        lost_games = lost_games + games_away,
+        lost_sets  = lost_sets + sets_away
+    WHERE id_stat = (SELECT id_stat FROM users WHERE id_user = id_home);
+
+    UPDATE statistics
+    SET won_games  = won_games + games_away,
+        won_sets   = won_sets + sets_away,
+        lost_games = lost_games + games_home,
+        lost_sets  = lost_sets + sets_home
+    WHERE id_stat = (SELECT id_stat FROM users WHERE id_user = id_away);
+    return new;
+END
+$$
+    language plpgsql;
+
+drop trigger if exists trigger_update_statistics on player_matches;
+
+CREATE TRIGGER trigger_update_statistics
+    AFTER UPDATE
+    ON player_matches
+    FOR EACH ROW
+EXECUTE PROCEDURE update_statistics();
+
+
+create or replace function update_statistics_team() returns trigger AS
+$$
+DECLARE
+    id_tour    INTEGER;
+    id_home    INTEGER;
+    id_away    INTEGER;
+    sets_home  INTEGER;
+    sets_away  INTEGER;
+    games_home INTEGER;
+    games_away INTEGER;
+
+BEGIN
+    SELECT old.id_tournament, old.id_team_home, old.id_team_away INTO id_tour, id_home, id_away;
+
+    IF (COALESCE(id_home, id_away) IS NULL) THEN
+        raise notice 'dont have id';
+        RETURN new;
+    END IF;
+
+    SELECT coalesce(new.games_away, 0) - coalesce(old.games_away, 0),
+           coalesce(new.games_home, 0) - coalesce(old.games_home, 0),
+           coalesce(new.sets_away, 0) - coalesce(old.sets_away, 0),
+           coalesce(new.sets_home, 0) - coalesce(old.sets_home, 0)
+    INTO games_away, games_home, sets_away, sets_home;
+
+    raise notice '%, %, %, %', games_away, games_home, sets_away, sets_home;
+    UPDATE statistics
+    SET won_games  = won_games + games_home,
+        won_sets   = won_sets + sets_home,
+        lost_games = lost_games + games_away,
+        lost_sets  = lost_sets + sets_away
+    WHERE id_stat = (SELECT id_stat FROM teams WHERE id_team = id_home);
+
+    UPDATE statistics
+    SET won_games  = won_games + games_away,
+        won_sets   = won_sets + sets_away,
+        lost_games = lost_games + games_home,
+        lost_sets  = lost_sets + sets_home
+    WHERE id_stat = (SELECT id_stat FROM teams WHERE id_team = id_away);
+    return new;
+END
+$$
+    language plpgsql;
+
+drop trigger if exists trigger_update_statistics on team_matches;
+
+CREATE TRIGGER trigger_update_statistics
+    AFTER UPDATE
+    ON team_matches
+    FOR EACH ROW
+EXECUTE PROCEDURE update_statistics_team();
+
 

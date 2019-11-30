@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 public class User {
     private int id_user;
     private int id_stat;
+    private String username;
     private String name;
     private String surname;
     private String birth;
@@ -15,9 +16,10 @@ public class User {
     private boolean is_admin;
     private Boolean is_left_handed;
 
-    public User(int id_user, int id_stat, String name, String surname, String birth, String sex, String nationality, boolean is_admin, Boolean is_left_handed) {
+    public User(int id_user, int id_stat, String username, String name, String surname, String birth, String sex, String nationality, boolean is_admin, Boolean is_left_handed) {
         this.id_user = id_user;
         this.id_stat = id_stat;
+        this.username = username;
         this.name = name;
         this.surname = surname;
         this.birth = birth;

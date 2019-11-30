@@ -41,16 +41,21 @@ public class UserResource {
 
     @RequestMapping(value = "/update", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateUser(@RequestBody User json) {
-        User user = new User(json.getId_user(), json.getId_stat(), json.getName(), json.getSurname(), json.getBirth(),
+        User user = new User(json.getId_user(), json.getId_stat(), json.getUsername(), json.getName(), json.getSurname(), json.getBirth(),
                 json.getSex(), json.getNationality(), json.is_admin(), json.getIs_left_handed());
         int count = userMapper.updateUser(user);
         System.out.println(count);
     }
 
-//    @RequestMapping(value = "/update/test", method = {RequestMethod.POST, RequestMethod.GET}, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseBody
-//    public void updateUserr(@RequestBody User_tmp json) {
-//        User_tmp user = new User_tmp("som_kokot");
-//        userMapper.updateUser(user);
-//    }
+    @RequestMapping(value = "/getloggeduserid/{username}", method = RequestMethod.GET)
+    public @ResponseBody
+    int getLoggedUserId(@PathVariable("username") String username) {
+        return userMapper.getLoggedUserId(username);
+    }
+
+    @RequestMapping(value = "/getloggeduseradminstatus/{username}", method = RequestMethod.GET)
+    public @ResponseBody
+    boolean getLoggedUserAdminStatus(@PathVariable("username") String username) {
+        return userMapper.getLoggedUserAdminStatus(username);
+    }
 }
