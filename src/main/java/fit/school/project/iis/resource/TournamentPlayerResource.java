@@ -2,7 +2,7 @@ package fit.school.project.iis.resource;
 
 import fit.school.project.iis.mapper.TournamentPlayerMapper;
 import fit.school.project.iis.model.TournamentPlayer;
-import org.springframework.http.MediaType;
+import fit.school.project.iis.model.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,18 +26,23 @@ public class TournamentPlayerResource {
     }
 
     @RequestMapping(value = "/getpending/{id_tournament}", method=RequestMethod.GET)
-    public @ResponseBody List<TournamentPlayer> getPendingPlayers(@PathVariable("id_tournament") int id_tournament) {
+    public @ResponseBody List<User> getPendingPlayers(@PathVariable("id_tournament") int id_tournament) {
         return tournamentPlayerMapper.getPendingPlayers(id_tournament);
     }
 
     @RequestMapping(value = "/getpendingreferee/{id_tournament}", method=RequestMethod.GET)
-    public @ResponseBody List<TournamentPlayer> getPendingReferees(@PathVariable("id_tournament") int id_tournament) {
+    public @ResponseBody List<User> getPendingReferees(@PathVariable("id_tournament") int id_tournament) {
         return tournamentPlayerMapper.getPendingReferees(id_tournament);
     }
 
     @RequestMapping(value = "/getaccepted/{id_tournament}", method=RequestMethod.GET)
-    public @ResponseBody List<TournamentPlayer> getAcceptedPlayers(@PathVariable("id_tournament") int id_tournament) {
+    public @ResponseBody List<User> getAcceptedPlayers(@PathVariable("id_tournament") int id_tournament) {
         return tournamentPlayerMapper.getAcceptedPlayers(id_tournament);
+    }
+
+    @RequestMapping(value = "/getacceptedreferees/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody List<User> getAcceptedReferees(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentPlayerMapper.getAcceptedReferees(id_tournament);
     }
 
     @RequestMapping(value = "/join/{id_tournament}/{id_player}", method=RequestMethod.GET)
@@ -47,7 +52,7 @@ public class TournamentPlayerResource {
 
     @RequestMapping(value = "/joinreferee/{id_tournament}/{id_player}", method=RequestMethod.GET)
     public void joinTournamentReferee(@PathVariable("id_tournament") int id_tournament, @PathVariable("id_player") int id_player) {
-        tournamentPlayerMapper.joinTournament(id_tournament, id_player);
+        tournamentPlayerMapper.joinTournamentReferee(id_tournament, id_player);
     }
 
     @RequestMapping(value = "/accept/{id_tournament}/{id_player}", method=RequestMethod.PUT)
