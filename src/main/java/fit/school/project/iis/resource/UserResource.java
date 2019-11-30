@@ -47,6 +47,15 @@ public class UserResource {
         System.out.println(count);
     }
 
+    @RequestMapping(value = "/getloggeduserid/{username}", method=RequestMethod.GET)
+    public @ResponseBody int getLoggedUserId(@PathVariable("username") String username) {
+        return userMapper.getLoggedUserId(username);
+    }
+
+    @RequestMapping(value = "/getloggeduseradminstatus/{username}", method=RequestMethod.GET)
+    public @ResponseBody boolean getLoggedUserAdminStatus(@PathVariable("username") String username) {
+        return userMapper.getLoggedUserAdminStatus(username);
+    }
 //    @RequestMapping(value = "/update/test", method = {RequestMethod.POST, RequestMethod.GET}, consumes = MediaType.APPLICATION_JSON_VALUE)
 //    @ResponseBody
 //    public void updateUserr(@RequestBody User_tmp json) {
