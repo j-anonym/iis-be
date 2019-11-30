@@ -29,7 +29,7 @@ public interface TournamentMapper {
             "    union all\n" +
             "    select id_tournament\n" +
             "    from team_tournament\n" +
-            "    where id_team = (\n" +
+            "    where id_team in (\n" +
             "        select id_team\n" +
             "        from teams\n" +
             "        where id_player_1 = ${id_user}\n" +

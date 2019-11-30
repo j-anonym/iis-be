@@ -27,9 +27,9 @@ public class UserResource {
         return userMapper.findAll();
     }
 
-    @RequestMapping(value = "/{id_user}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{id_user}", method = RequestMethod.GET)
     @ResponseBody
-    public User findUser(@PathVariable("/get/id_user") int id_user) {
+    public User findUser(@PathVariable("id_user") int id_user) {
         return userMapper.findUser(id_user);
     }
 

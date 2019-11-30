@@ -1,6 +1,7 @@
 package fit.school.project.iis.resource;
 
 import fit.school.project.iis.mapper.TournamentTeamMapper;
+import fit.school.project.iis.model.Team;
 import fit.school.project.iis.model.TournamentTeam;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,12 @@ public class TournamentTeamResource {
     }
 
     @RequestMapping(value = "/getpending/{id_tournament}", method= RequestMethod.GET)
-    public @ResponseBody List<TournamentTeam> getPendingTeams(@PathVariable("id_tournament") int id_tournament) {
+    public @ResponseBody List<Team> getPendingTeams(@PathVariable("id_tournament") int id_tournament) {
         return tournamentTeamMapper.getPendingTeams(id_tournament);
     }
 
     @RequestMapping(value = "/getaccepted/{id_tournament}", method=RequestMethod.GET)
-    public @ResponseBody List<TournamentTeam> getAcceptedTeams(@PathVariable("id_tournament") int id_tournament) {
+    public @ResponseBody List<Team> getAcceptedTeams(@PathVariable("id_tournament") int id_tournament) {
         return tournamentTeamMapper.getAcceptedTeams(id_tournament);
     }
 
