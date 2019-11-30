@@ -78,8 +78,8 @@ create table users
 );
 alter table users add foreign key (id_stat) references statistics(id_stat);
 INSERT INTO statistics (won_matches, lost_matches, won_sets, lost_sets, won_games, lost_games) VALUES (0,0,0,0,0,0);
-insert into users(id_stat, name, surname, birth, sex, nationality, is_admin, is_left_handed)
-VALUES (1, 'admin', NULL, NULL, NULL, NULL, true, NULL);
+insert into users(id_stat, name, username, password, surname, birth, sex, nationality, is_admin, is_left_handed)
+VALUES (1, NULL, 'admin', '$2a$10$BHOa/UosYva6e.Mnff0GdOdsUonuFYFatfhv0XHEeY8osP7d8VFO2', NULL, NULL, NULL, NULL, true, NULL);
 
 alter table teams
     add column id_stat int;

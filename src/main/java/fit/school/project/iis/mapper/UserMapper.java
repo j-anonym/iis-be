@@ -14,14 +14,14 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("SELECT id_user, id_stat, name, surname, birth, sex, nationality, is_admin, is_left_handed " +
+    @Select("SELECT id_user, id_stat, username, name, surname, birth, sex, nationality, is_admin, is_left_handed " +
             "FROM users WHERE id_user > 1;")
     List<User> findAll();
 
     @Delete("DELETE FROM users WHERE id_user = #{id_user}")
     void deleteUser(@Param("id_user") int id_user);
 
-    @Select("SELECT  id_user, id_stat, name, surname, birth, sex, nationality, is_admin, is_left_handed " +
+    @Select("SELECT  id_user, id_stat,username, name, surname, birth, sex, nationality, is_admin, is_left_handed " +
             "FROM users where id_user = #{id_user};")
     User findUser(@Param("id_user") int id_user);
 
