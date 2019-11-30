@@ -11,7 +11,7 @@ import java.util.List;
 public interface TournamentMapper {
 
     @Insert("INSERT INTO tournaments(prize, name, date_from, date_to, place, occupation, cost, capacity, is_singles, type, sponsors, id_staff) " +
-            "VALUES(#{prize}, #{name}, #{date_from}::date, #{date_to}::date, #{place}, #{occupation}, #{cost}, #{capacity}, #{is_singles}, #{type}::player_type, #{sponsors}, ${id_staff})")
+            "VALUES(#{prize}, #{name}, #{date_from}::date + '1 day'::interval, #{date_to}::date + '1 day'::interval, #{place}, #{occupation}, #{cost}, #{capacity}, #{is_singles}, #{type}::player_type, #{sponsors}, ${id_staff})")
     void insertNewTournament(Tournament tournament);
 
     @Select("SELECT * FROM tournaments WHERE id_tournament = ${id_tournament}")

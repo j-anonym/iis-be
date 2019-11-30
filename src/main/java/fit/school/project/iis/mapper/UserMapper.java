@@ -25,7 +25,7 @@ public interface UserMapper {
             "FROM users where id_user = #{id_user};")
     User findUser(@Param("id_user") int id_user);
 
-    @Update("UPDATE users SET name = #{name}, surname = #{surname}, birth = #{birth}::date, sex = #{sex}::player_type, " +
+    @Update("UPDATE users SET name = #{name}, surname = #{surname}, birth = #{birth}::date + '1 day'::interval, sex = #{sex}::player_type, " +
             "nationality = #{nationality}, is_admin = #{is_admin}, is_left_handed = #{is_left_handed}" +
             "WHERE id_user = #{id_user}; ")
     int updateUser(User user);
