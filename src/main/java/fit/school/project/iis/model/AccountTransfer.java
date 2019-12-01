@@ -45,6 +45,6 @@ public class AccountTransfer {
 	}
 
 	public void setNationality(String nationality) {
-		this.nationality = nationality;
+		this.nationality = nationality.toUpperCase();
 	}
 }
