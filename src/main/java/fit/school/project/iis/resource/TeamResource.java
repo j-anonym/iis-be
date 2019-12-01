@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://iis-tennis.herokuapp.com")
 @RequestMapping("/api/team")
 public class TeamResource {
     private TeamMapper teamMapper;
