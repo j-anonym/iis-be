@@ -23,7 +23,7 @@ import fit.school.project.iis.config.AuthenticationTokenUtil;
 import fit.school.project.iis.model.AccountTransfer;
 
 @RestController
-@CrossOrigin
+@CrossOrigin (origins = "https://iis-tennis.herokuapp.com")
 public class AuthenticationController {
 
     @Autowired

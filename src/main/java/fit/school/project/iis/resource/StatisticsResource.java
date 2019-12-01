@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Component
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://iis-tennis.herokuapp.com")
 @RestController
 @RequestMapping("/api/statistics")
 public class StatisticsResource {
