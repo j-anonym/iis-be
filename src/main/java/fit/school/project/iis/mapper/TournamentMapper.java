@@ -1,5 +1,7 @@
 package fit.school.project.iis.mapper;
 
+import fit.school.project.iis.model.PlayerMatch;
+import fit.school.project.iis.model.TeamMatch;
 import fit.school.project.iis.model.Tournament;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
@@ -44,5 +46,11 @@ public interface TournamentMapper {
 
     @Delete("DELETE FROM tournaments WHERE id_tournament = ${id_tournament};")
     void deleteTournament(@Param("id_tournament") int id_tournament);
+
+    @Select("SELECT * FROM player_matches WHERE id_tournament=${id_tournament}")
+    List<PlayerMatch> getAllPlayerMatches(@Param("id_tournament") int id_tournament);
+
+    @Select("SELECT * FROM team_matches WHERE id_tournament=${id_tournament}")
+    List<TeamMatch> getAllTeamMatches(@Param("id_tournament") int id_tournament);
 
 }

@@ -1,6 +1,8 @@
 package fit.school.project.iis.resource;
 
 import fit.school.project.iis.mapper.TournamentMapper;
+import fit.school.project.iis.model.PlayerMatch;
+import fit.school.project.iis.model.TeamMatch;
 import fit.school.project.iis.model.Tournament;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -54,5 +56,15 @@ public class TournamentResource {
     @RequestMapping(value = "delete/{id_tournament}", method=RequestMethod.DELETE)
     public @ResponseBody void deleteTournament(@PathVariable("id_tournament") int id_tournament) {
         tournamentMapper.deleteTournament(id_tournament);
+    }
+
+    @RequestMapping(value = "/getplayermatches/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody List<PlayerMatch> getAllPlayerMatches(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentMapper.getAllPlayerMatches(id_tournament);
+    }
+
+    @RequestMapping(value = "/getteammatches/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody List<TeamMatch> getAllTeamMatches(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentMapper.getAllTeamMatches(id_tournament);
     }
 }

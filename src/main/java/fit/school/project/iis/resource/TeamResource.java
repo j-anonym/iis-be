@@ -2,6 +2,7 @@ package fit.school.project.iis.resource;
 
 import fit.school.project.iis.mapper.TeamMapper;
 import fit.school.project.iis.model.Team;
+import fit.school.project.iis.model.User;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,11 @@ public class TeamResource {
     @RequestMapping(value = "/get/{id_team}", method= RequestMethod.GET)
     public @ResponseBody Team getTeam(@PathVariable("id_team") int id_team) {
         return teamMapper.getTeam(id_team);
+    }
+
+    @RequestMapping(value = "/get/players/{id_team}", method = RequestMethod.GET)
+    public @ResponseBody List<User> getTeamPlayers(@PathVariable("id_team") int id_team) {
+        return teamMapper.getTeamPlayers(id_team);
     }
 
     @RequestMapping(value = "/getlast/{id_player}", method= RequestMethod.GET)
