@@ -1,6 +1,9 @@
 package fit.school.project.iis.resource;
 
 import fit.school.project.iis.mapper.TournamentMapper;
+import fit.school.project.iis.model.PlayerMatch;
+import fit.school.project.iis.model.Team;
+import fit.school.project.iis.model.TeamMatch;
 import fit.school.project.iis.model.Tournament;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -54,5 +57,35 @@ public class TournamentResource {
     @RequestMapping(value = "delete/{id_tournament}", method=RequestMethod.DELETE)
     public @ResponseBody void deleteTournament(@PathVariable("id_tournament") int id_tournament) {
         tournamentMapper.deleteTournament(id_tournament);
+    }
+
+    @RequestMapping(value = "/getplayermatches/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody List<PlayerMatch> getAllPlayerMatches(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentMapper.getAllPlayerMatches(id_tournament);
+    }
+
+    @RequestMapping(value = "/getteammatches/{id_tournament}", method=RequestMethod.GET)
+    public @ResponseBody List<TeamMatch> getAllTeamMatches(@PathVariable("id_tournament") int id_tournament) {
+        return tournamentMapper.getAllTeamMatches(id_tournament);
+    }
+
+    @RequestMapping(value = "/update/player/match", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody void updatePlayerMatch(@RequestBody PlayerMatch json) {
+
+        PlayerMatch playerMatch = new PlayerMatch(json.getId_player_match(), json.getSets_home(), json.getSets_away(),
+                json.getGames_home(), json.getGames_away(), json.getId_user_home(), json.getId_user_away(),
+                json.getId_referee(), json.getId_tournament());
+
+        tournamentMapper.updatePlayerMatch(playerMatch);
+    }
+
+    @RequestMapping(value = "/update/team/match", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody void updateTeamMatch(@RequestBody TeamMatch json) {
+
+        TeamMatch teamMatch = new TeamMatch(json.getId_team_match(), json.getSets_home(), json.getSets_away(),
+                json.getGames_home(), json.getGames_away(), json.getId_team_home(), json.getId_team_away(),
+                json.getId_referee(), json.getId_tournament());
+
+        tournamentMapper.updateTeamMatch(teamMatch);
     }
 }
