@@ -35,6 +35,24 @@ public interface UserMapper {
 
     @Select("SELECT is_admin FROM users WHERE username = #{username}")
     boolean getLoggedUserAdminStatus(@Param("username") String username);
+    
+    @Update("UPDATE users SET name=#{name} WHERE id_user=${id_user}")
+    void updateName(@Param("id_user") Integer id_user, @Param("name") String name);
+
+    @Update("UPDATE users SET surname=#{surname} WHERE id_user=${id_user}")
+    void updateSurname(@Param("id_user") Integer id_user, @Param("surname") String surname);
+
+    @Update("UPDATE users SET nationality=#{nationality} WHERE id_user=${id_user}")
+    void updateNationality(@Param("id_user") Integer id_user, @Param("nationality") String nationality);
+
+    @Update("UPDATE users SET birth=#{birth}::date WHERE id_user=${id_user}")
+    void updateBirth(@Param("id_user") Integer id_user, @Param("birth") String birth);
+
+    @Update("UPDATE users SET sex=#{sex}::player_type WHERE id_user=${id_user}")
+    void updateSex(@Param("id_user") Integer id_user, @Param("sex") String sex);
+
+    @Update("UPDATE users SET is_left_handed=#{is_left_handed} WHERE id_user=${id_user}")
+    void updateLeftHanded(@Param("id_user") Integer id_user, @Param("is_left_handed") Boolean is_left_handed);
 
     //@Select("SELECT id_tournament FROM tournaments WHERE id_staff = 1 ORDER BY id_tournament DESC LIMIT 1")
     //int getLastCreatedTournament(int id_staff);
