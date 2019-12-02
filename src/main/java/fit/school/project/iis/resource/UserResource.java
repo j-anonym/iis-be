@@ -58,4 +58,34 @@ public class UserResource {
     boolean getLoggedUserAdminStatus(@PathVariable("username") String username) {
         return userMapper.getLoggedUserAdminStatus(username);
     }
+    
+       @RequestMapping(value = "/updatename/{id_user}/{name}", method= RequestMethod.PUT)
+    public @ResponseBody void updateName(@PathVariable("id_user") Integer id_user, @PathVariable("name") String name) {
+        userMapper.updateName(id_user, name);
+    }
+
+    @RequestMapping(value = "/updatesurname/{id_user}/{surname}", method= RequestMethod.PUT)
+    public @ResponseBody void updateSurname(@PathVariable("id_user") Integer id_user, @PathVariable("surname") String surname) {
+        userMapper.updateSurname(id_user, surname);
+    }
+
+    @RequestMapping(value = "/updatenationality/{id_user}/{nationality}", method= RequestMethod.PUT)
+    public @ResponseBody void updateNationality(@PathVariable("id_user") Integer id_user, @PathVariable("nationality") String nationality) {
+        userMapper.updateNationality(id_user, nationality);
+    }
+
+    @RequestMapping(value = "/updatebirth/{id_user}/{birth}", method= RequestMethod.PUT)
+    public @ResponseBody void updateBirth(@PathVariable("id_user") Integer id_user, @PathVariable("birth") String birth) {
+        userMapper.updateBirth(id_user, birth);
+    }
+
+    @RequestMapping(value = "/updatesex/{id_user}/{sex}", method= RequestMethod.PUT)
+    public @ResponseBody void updateSex(@PathVariable("id_user") Integer id_user, @PathVariable("sex") String sex) {
+        userMapper.updateSex(id_user, sex);
+    }
+
+    @RequestMapping(value = "/updatelefthanded/{id_user}/{is_left_handed}", method= RequestMethod.PUT)
+    public @ResponseBody void updateLeftHanded(@PathVariable("id_user") Integer id_user, @PathVariable("is_left_handed") Boolean is_left_handed) {
+        userMapper.updateLeftHanded(id_user, is_left_handed);
+    }
 }
