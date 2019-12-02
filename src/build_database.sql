@@ -585,13 +585,13 @@ create or replace function update_player_matches() returns trigger AS
 $$
 DECLARE
     is_confirmed  BOOLEAN;
-    id_tournament INTEGER;
+    id_tournamen INTEGER;
     id_free_away  INTEGER;
     id_free_both  INTEGER;
     id_user INTEGER;
 
 BEGIN
-    SELECT new.is_confirmed, old.id_tournament, old.id_player INTO is_confirmed, id_tournament, id_user;
+    SELECT new.is_confirmed, old.id_tournament, old.id_player INTO is_confirmed, id_tournamen, id_user;
 
     IF (COALESCE(is_confirmed, FALSE) = FALSE) THEN
         raise notice 'This was not confirmation update';
@@ -601,7 +601,7 @@ BEGIN
     SELECT id_player_match
     FROM player_matches
     WHERE COALESCE(id_user_home, id_user_away) IS NULL
-    AND player_matches.id_tournament = id_tournament
+    AND player_matches.id_tournament = id_tournamen
     ORDER BY 1
     LIMIT 1
     INTO id_free_both;
@@ -611,7 +611,7 @@ BEGIN
     FROM player_matches
     WHERE id_user_away IS NULL
       AND id_user_home IS NOT NULL
-      AND player_matches.id_tournament = id_tournament
+      AND player_matches.id_tournament = id_tournamen
     ORDER BY 1
     LIMIT 1
     INTO id_free_away;
@@ -652,13 +652,13 @@ create or replace function update_team_matches() returns trigger AS
 $$
 DECLARE
     is_confirmed  BOOLEAN;
-    id_tournament INTEGER;
+    id_tournamen INTEGER;
     id_free_away  INTEGER;
     id_free_both  INTEGER;
     id_team INTEGER;
 
 BEGIN
-    SELECT new.is_confirmed, old.id_tournament, old.id_team INTO is_confirmed, id_tournament, id_team;
+    SELECT new.is_confirmed, old.id_tournament, old.id_team INTO is_confirmed, id_tournamen, id_team;
 
     IF (COALESCE(is_confirmed, FALSE) = FALSE) THEN
         raise notice 'This was not confirmation update';
@@ -668,7 +668,7 @@ BEGIN
     SELECT id_team_match
     FROM team_matches
     WHERE COALESCE(id_team_home, id_team_away) IS NULL
-    AND team_matches.id_tournament = id_tournament
+    AND team_matches.id_tournament = id_tournamen
     ORDER BY 1
     LIMIT 1
     INTO id_free_both;
@@ -678,7 +678,7 @@ BEGIN
     FROM team_matches
     WHERE id_team_away IS NULL
         AND id_team_home IS NOT NULL
-        AND team_matches.id_tournament = id_tournament
+        AND team_matches.id_tournament = id_tournamen
     ORDER BY 1
     LIMIT 1
     INTO id_free_away;
