@@ -41,9 +41,9 @@ public interface TournamentPlayerMapper {
     @Insert("INSERT INTO player_tournament(id_player, type, id_tournament, is_confirmed) VALUES(#{id_player}::integer, 'R', #{id_tournament}::integer, false)")
     void joinTournamentReferee(@Param("id_player") int id_player, @Param("id_tournament") int id_tournament);
 
-    @Update("UPDATE player_tournament SET is_confirmed=true WHERE id_player=${id_player} AND id_tournament=${id_tournament}")
+    @Update("UPDATE player_tournament t SET is_confirmed=true WHERE id_player=${id_player} AND t.id_tournament=${id_tournament}")
     void acceptPlayer(@Param("id_player") int id_player, @Param("id_tournament") int id_tournament);
 
-    @Delete("DELETE FROM player_tournament WHERE id_player=#{id_player}::integer AND id_tournament=#{id_tournament}::integer")
+    @Delete("DELETE FROM player_tournament t WHERE id_player=#{id_player}::integer AND t.id_tournament=#{id_tournament}::integer")
     void declinePlayer(@Param("id_player") int id_player, @Param("id_tournament") int id_tournament);
 }
