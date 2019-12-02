@@ -54,13 +54,13 @@ public interface TournamentMapper {
     List<TeamMatch> getAllTeamMatches(@Param("id_tournament") int id_tournament);
 
     @Update("UPDATE player_matches SET sets_home=${sets_home}, sets_away=${sets_away}, games_home=${games_home}, " +
-            "games_away=${games_away}, id_user_home=${id_user_home}, id_user_away=${id_user_away}, " +
+            "games_away=${games_away}, " +
             "id_referee=${id_referee} " +
             "WHERE id_player_match=${id_player_match};")
     void updatePlayerMatch(PlayerMatch playerMatch);
 
     @Update("UPDATE team_matches SET sets_home=${sets_home}, sets_away=${sets_away}, games_home=${games_home}, " +
-            "games_away=${games_away}, id_team_home=${id_team_home}, id_team_away=${id_team_away}, " +
+            "games_away=${games_away}, " +
             "id_referee=${id_referee} " +
             "WHERE id_team_match=${id_team_match};")
     void updateTeamMatch(TeamMatch teamMatch);
