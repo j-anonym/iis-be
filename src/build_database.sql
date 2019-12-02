@@ -178,6 +178,8 @@ alter table player_tournament
 alter table player_tournament
     ADD FOREIGN KEY (id_player) REFERENCES users (id_user) ON DELETE CASCADE;
 
+
+-------------------------------- TRIGGERS & FUNCTIONS --------------------------------------
 create or replace function update_occupation() returns trigger AS
 $$
 BEGIN
@@ -322,10 +324,15 @@ DECLARE
     won_home   INTEGER;
     lost_home  INTEGER;
 BEGIN
-    SELECT old.id_tournament, old.id_user_home, old.id_user_away INTO id_tour, id_home, id_away;
+    SELECT old.id_tournament, COALESCE(old.id_user_home, new.id_user_home),
+    COALESCE(old.id_user_away, new.id_user_away) INTO id_tour, id_home, id_away;
 
     IF (COALESCE(id_home, id_away) IS NULL) THEN
         raise notice 'dont have id';
+        RETURN new;
+    END IF;
+
+    IF (new.games_away IS NULL) THEN
         RETURN new;
     END IF;
 
@@ -394,6 +401,10 @@ BEGIN
         RETURN new;
     END IF;
 
+    IF (new.games_away IS NULL) THEN
+        RETURN new;
+    END IF;
+
     SELECT coalesce(new.games_away, 0) - coalesce(old.games_away, 0),
            coalesce(new.games_home, 0) - coalesce(old.games_home, 0),
            coalesce(new.sets_away, 0) - coalesce(old.sets_away, 0),
@@ -436,3 +447,132 @@ CREATE TRIGGER trigger_update_statistics
     ON team_matches
     FOR EACH ROW
 EXECUTE PROCEDURE update_statistics_team();
+
+create or replace function update_player_matches() returns trigger AS
+$$
+DECLARE
+    is_confirmed  BOOLEAN;
+    id_tournament INTEGER;
+    id_free_away  INTEGER;
+    id_free_both  INTEGER;
+    id_user INTEGER;
+
+BEGIN
+    SELECT new.is_confirmed, old.id_tournament, old.id_player INTO is_confirmed, id_tournament, id_user;
+
+    IF (COALESCE(is_confirmed, FALSE) = FALSE) THEN
+        raise notice 'This was not confirmation update';
+        RETURN new;
+    END IF;
+
+    SELECT id_player_match
+    FROM player_matches
+    WHERE COALESCE(id_user_home, id_user_away) IS NULL
+    ORDER BY 1
+    LIMIT 1
+    INTO id_free_both;
+    raise notice 'id free both %', id_free_both;
+
+    SELECT id_player_match
+    FROM player_matches
+    WHERE id_user_away IS NULL
+      AND id_user_home IS NOT NULL
+    ORDER BY 1
+    LIMIT 1
+    INTO id_free_away;
+    raise notice 'id free both %', id_free_away;
+
+
+    IF (id_free_both <= id_free_away) THEN
+        UPDATE player_matches SET id_user_home = id_user WHERE id_player_match = id_free_both;
+        return new;
+    ELSE IF (id_free_both > id_free_away) THEN
+        UPDATE player_matches SET id_user_away = id_user WHERE id_player_match = id_free_away;
+        return new;
+        END IF;
+    end if;
+
+    IF (id_free_both IS NOT NULL AND id_free_away IS NULL) THEN
+        UPDATE player_matches SET id_user_home = id_user WHERE id_player_match = id_free_both;
+    ELSE IF (id_free_both IS NULL AND id_free_away IS NOT NULL) THEN
+        UPDATE player_matches SET id_user_away = id_user WHERE id_player_match = id_free_away;
+        END IF;
+    end if;
+
+    return new;
+END
+$$
+    language plpgsql;
+
+drop trigger if exists trigger_update_player_matches on player_tournament;
+
+CREATE TRIGGER trigger_update_player_matches
+    AFTER UPDATE
+    ON player_tournament
+    FOR EACH ROW
+EXECUTE PROCEDURE update_player_matches();
+
+
+create or replace function update_team_matches() returns trigger AS
+$$
+DECLARE
+    is_confirmed  BOOLEAN;
+    id_tournament INTEGER;
+    id_free_away  INTEGER;
+    id_free_both  INTEGER;
+    id_team INTEGER;
+
+BEGIN
+    SELECT new.is_confirmed, old.id_tournament, old.id_team INTO is_confirmed, id_tournament, id_team;
+
+    IF (COALESCE(is_confirmed, FALSE) = FALSE) THEN
+        raise notice 'This was not confirmation update';
+        RETURN new;
+    END IF;
+
+    SELECT id_team_match
+    FROM team_matches
+    WHERE COALESCE(id_team_home, id_team_away) IS NULL
+    ORDER BY 1
+    LIMIT 1
+    INTO id_free_both;
+    raise notice 'id free both %', id_free_both;
+
+    SELECT id_team_match
+    FROM team_matches
+    WHERE id_team_away IS NULL
+      AND id_team_home IS NOT NULL
+    ORDER BY 1
+    LIMIT 1
+    INTO id_free_away;
+    raise notice 'id free both %', id_free_away;
+
+
+    IF (id_free_both <= id_free_away) THEN
+        UPDATE team_matches SET id_team_home = id_team WHERE id_team_match = id_free_both;
+        return new;
+    ELSE IF (id_free_both > id_free_away) THEN
+        UPDATE team_matches SET id_team_away = id_team WHERE id_team_match = id_free_away;
+        return new;
+        END IF;
+    end if;
+
+    IF (id_free_both IS NOT NULL AND id_free_away IS NULL) THEN
+        UPDATE team_matches SET id_team_home = id_team WHERE id_team_match = id_free_both;
+    ELSE IF (id_free_both IS NULL AND id_free_away IS NOT NULL) THEN
+        UPDATE team_matches SET id_team_away = id_team WHERE id_team_match = id_free_away;
+        END IF;
+    end if;
+
+    return new;
+END
+$$
+    language plpgsql;
+
+drop trigger if exists trigger_update_team_matches on team_tournament;
+
+CREATE TRIGGER trigger_update_team_matches
+    AFTER UPDATE
+    ON team_tournament
+    FOR EACH ROW
+EXECUTE PROCEDURE update_team_matches();

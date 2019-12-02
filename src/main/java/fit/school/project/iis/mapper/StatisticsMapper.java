@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface StatisticsMapper {
 
-    @Select("SELECT name || surname as name,\n" +
+    @Select("SELECT name || ' ' || surname as name,\n" +
             "       s.id_stat,\n" +
             "       s.won_matches,\n" +
             "       s.lost_matches,\n" +
