@@ -88,4 +88,10 @@ public class UserResource {
     public @ResponseBody void updateLeftHanded(@PathVariable("id_user") Integer id_user, @PathVariable("is_left_handed") Boolean is_left_handed) {
         userMapper.updateLeftHanded(id_user, is_left_handed);
     }
+    
+    @RequestMapping(value = "/getplayer/{id_stat}", method = RequestMethod.GET)
+    @ResponseBody
+    public User getPlayer(@PathVariable("id_stat") int id_stat) {
+        return userMapper.getPlayer(id_stat);
+    }
 }

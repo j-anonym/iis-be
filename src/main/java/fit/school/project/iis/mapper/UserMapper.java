@@ -53,6 +53,10 @@ public interface UserMapper {
 
     @Update("UPDATE users SET is_left_handed=#{is_left_handed} WHERE id_user=${id_user}")
     void updateLeftHanded(@Param("id_user") Integer id_user, @Param("is_left_handed") Boolean is_left_handed);
+    
+    @Select("SELECT  id_user, id_stat,username, name, surname, birth, sex, nationality, is_admin, is_left_handed " +
+            "FROM users where id_stat = #{id_stat};")
+    User getPlayer(@Param("id_stat") int id_stat);
 
     //@Select("SELECT id_tournament FROM tournaments WHERE id_staff = 1 ORDER BY id_tournament DESC LIMIT 1")
     //int getLastCreatedTournament(int id_staff);
