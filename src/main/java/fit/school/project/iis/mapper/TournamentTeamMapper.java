@@ -32,9 +32,9 @@ public interface TournamentTeamMapper {
     @Insert("INSERT INTO team_tournament(id_team, id_tournament, is_confirmed) VALUES(#{id_team}::integer, #{id_tournament}::integer, false)")
     void joinTournament(@Param("id_tournament") int id_tournament, @Param("id_team") int id_team);
 
-    @Update("UPDATE team_tournament SET is_confirmed=true WHERE id_team=${id_team} AND id_tournament=${id_tournament}")
+    @Update("UPDATE team_tournament t SET is_confirmed=true WHERE id_team=${id_team} AND t.id_tournament=${id_tournament}")
     void acceptTeam(@Param("id_tournament") int id_tournament, @Param("id_team") int id_team);
 
-    @Delete("DELETE FROM team_tournament WHERE id_team=${id_team} AND id_tournament=${id_tournament}")
+    @Delete("DELETE FROM team_tournament t WHERE id_team=${id_team} AND t.id_tournament=${id_tournament}")
     void declineTeam(@Param("id_tournament") int id_tournament, @Param("id_team") int id_team);
 }
