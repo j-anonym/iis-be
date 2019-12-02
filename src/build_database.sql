@@ -394,7 +394,7 @@ BEGIN
         return new;
     END IF;
 
-    SELECT (id_player_match_actual - id_player_match_first + 2) / 2 INTO match_index;
+    SELECT id_player_match_actual - id_player_match_first + 1 INTO match_index;
     raise notice 'match index %',match_index;
     raise notice 'capacity %',cap;
     raise notice 'id_player_match_first %',id_player_match_first;
@@ -529,7 +529,7 @@ BEGIN
         return new;
     END IF;
 
-    SELECT (id_team_match_actual - id_team_match_first + 2) / 2 INTO match_index;
+    SELECT id_team_match_actual - id_team_match_first + 1 INTO match_index;
     raise notice 'match index %',match_index;
     raise notice 'capacity %',cap;
     raise notice 'id_team_match_first %', id_team_match_first;
