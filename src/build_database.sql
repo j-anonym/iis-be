@@ -601,6 +601,7 @@ BEGIN
     SELECT id_player_match
     FROM player_matches
     WHERE COALESCE(id_user_home, id_user_away) IS NULL
+    AND player_matches.id_tournament = id_tournament
     ORDER BY 1
     LIMIT 1
     INTO id_free_both;
@@ -610,6 +611,7 @@ BEGIN
     FROM player_matches
     WHERE id_user_away IS NULL
       AND id_user_home IS NOT NULL
+      AND player_matches.id_tournament = id_tournament
     ORDER BY 1
     LIMIT 1
     INTO id_free_away;
@@ -666,6 +668,7 @@ BEGIN
     SELECT id_team_match
     FROM team_matches
     WHERE COALESCE(id_team_home, id_team_away) IS NULL
+    AND team_matches.id_tournament = id_tournament
     ORDER BY 1
     LIMIT 1
     INTO id_free_both;
@@ -674,7 +677,8 @@ BEGIN
     SELECT id_team_match
     FROM team_matches
     WHERE id_team_away IS NULL
-      AND id_team_home IS NOT NULL
+        AND id_team_home IS NOT NULL
+        AND team_matches.id_tournament = id_tournament
     ORDER BY 1
     LIMIT 1
     INTO id_free_away;
